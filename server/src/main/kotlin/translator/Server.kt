@@ -17,20 +17,29 @@ import org.springframework.ws.transport.http.MessageDispatcherServlet
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition
 import org.springframework.ws.wsdl.wsdl11.Wsdl11Definition
 import org.springframework.xml.xsd.SimpleXsdSchema
+import translator.infrastructure.DeeplTranslator
+import java.net.http.HttpClient
 
 /**
  * The namespace of the payload root element.
  */
 private const val TRANSLATOR_NAMESPACE_URI = "http://translator/web/ws/schema"
 
+
 /**
  * The translator endpoint.
  */
 @Endpoint
 class TranslatorEndpoint {
+    private val translationService: TranslationService =  DeeplTranslator(HttpClient.newHttpClient(), System.getenv("DEEPL_AUTH_KEY"))
+
     @PayloadRoot(namespace = TRANSLATOR_NAMESPACE_URI, localPart = "TranslationRequest")
     @ResponsePayload
-    fun translation(@RequestPayload request: TranslationRequest): TranslationResponse = TODO()
+    fun translation(@RequestPayload request: TranslationRequest): TranslationResponse {
+        val response = TranslationResponse()
+        response.translation = translationService.translate(request.text, request.langFrom, request.langTo)
+        return response
+    }
 }
 
 

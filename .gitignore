@@ -4,4 +4,8 @@
 # Ignore Gradle build output directory
 build
 
+# Ignore IntelliJ Idea project folder
 .idea
+
+# Ignore private environment variables file
+.envrc

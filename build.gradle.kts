@@ -59,6 +59,13 @@ project(":server") {
         "implementation"(files(layout.buildDirectory.dir("classes/xjc")) {
             builtBy("genJaxb")
         })
+        implementation("org.apache.httpcomponents:httpclient:4.5.13")
+
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+        testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+
     }
 
     task("genJaxb") {
@@ -104,6 +111,9 @@ project(":server") {
             getByName("main").java.srcDirs(generatedJavaDirs)
         }
     }
+
+    val test: Test by tasks
+    test.useJUnitPlatform()
 }
 
 project(":client") {
@@ -203,4 +213,7 @@ project(":client") {
             getByName("main").resources.srcDirs(generatedResourceDirs)
         }
     }
+
+    val test: Test by tasks
+    test.useJUnitPlatform()
 }
