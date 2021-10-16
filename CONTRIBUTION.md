@@ -32,7 +32,7 @@ $ gradle :client:bootJar --no-daemon
 
 This will compile the client into `./client/build/libs/client.jar`.
 
-### Executing both server and client
+## Executing both server and client
 
 The server must be provided a DeepL API token to work correctly as an environment variable, because this will be
 the service used to translate the requests from the clients.
