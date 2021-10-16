@@ -7,7 +7,7 @@ import java.net.http.HttpClient
 
 
 class DeeplTranslatorTest {
-    val apiKey = System.getenv("DEEPL_AUTH_KEY")
+    private val apiKey: String = System.getenv("DEEPL_AUTH_KEY")
 
     @Test
     fun `it must translate hello from english to spanish`() {

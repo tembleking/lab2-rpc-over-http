@@ -15,13 +15,21 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
       - name: Build the server with Gradle
         run: ./gradlew :server:build --no-daemon
+        env:
+          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_TOKEN }}
       - name: Test the server with Gradle
         run: ./gradlew :server:check --no-daemon
-      - name: Cleanup Gradle Cache
-        run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+        env:
+          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_TOKEN }}
